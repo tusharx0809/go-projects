@@ -1,0 +1,9 @@
+--Users Table
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_uid UUID DEFAULT gen_random_uuid() NOT NULL UNIQUE,
+    email VARCHAR(200) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    modified_at TIMESTAMP WITH TIME ZONE
+);
