@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func DBManager(connection_string string) (*pgxpool.Pool, error) {
+func ConnectDB(connection_string string) (*pgxpool.Pool, error) {
 	pool, err := pgxpool.New(context.Background(), connection_string)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v \n", err)

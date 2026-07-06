@@ -16,15 +16,32 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var connection_string = "postgres://" + os.Getenv("USER") + ":" + os.Getenv("PASSWORD") + "@localhost:" + os.Getenv("PORT") + "/auth-server?sslmode=disable"
+	connectionString := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=%s",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_SSLMODE"),
+	)
 	//fmt.Println(connection_string)
 
-	pool, err := dbmanager.DBManager(connection_string)
+	pool, err := dbmanager.ConnectDB(connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer pool.Close()
 	fmt.Println("Connection successful")
+
+	// var version string
+	// err = pool.QueryRow(context.Background(), "select version()").Scan(&version)
+
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Println(version)
 
 }
