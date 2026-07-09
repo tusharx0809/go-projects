@@ -4,6 +4,7 @@ import (
 	"authentication-service/models"
 	"encoding/json"
 	"net/http"
+	"time"
 )
 
 func (h *AuthHandler) RegisterUser(
@@ -24,7 +25,17 @@ func (h *AuthHandler) RegisterUser(
 		)
 		return
 	}
-
+	parsedDob, err := time.Parse("2006-01-02", req.DateOfBirth)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(
+			models.UserRegistrationResponse{
+				Success: false,
+				Message: "Invalid date_of_birth format. Use YYYY-MM-DD",
+			},
+		)
+		return
+	}
 	var errResp string = ""
 	switch {
 	case len(req.FirstName) <= 0:
@@ -37,7 +48,7 @@ func (h *AuthHandler) RegisterUser(
 		errResp = "Password must be atleast 10 characters long!"
 	case len(req.Username) <= 0:
 		errResp = "Username cannot be empty"
-	case len(req.DateOfBirth.GoString()) <= 0:
+	case len(req.DateOfBirth) <= 0:
 		errResp = "Date Of Birth cannot be empty!"
 	}
 
