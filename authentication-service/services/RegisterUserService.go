@@ -20,7 +20,7 @@ func (s *AuthService) RegisterUser(firstName string, lastName string, email stri
 	switch {
 	case len(firstName) <= 0:
 		errResp = "First name cannot be empty!"
-	case len(firstName) <= 0:
+	case len(lastName) <= 0:
 		errResp = "Last name cannot be empty!"
 	case len(email) <= 0:
 		errResp = "Email cannot be empty!"
