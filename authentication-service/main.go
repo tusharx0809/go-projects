@@ -8,6 +8,7 @@ import (
 	dbmanager "authentication-service/DBmanager"
 	"authentication-service/handlers"
 	"authentication-service/repository"
+	"authentication-service/server"
 	"authentication-service/services"
 
 	"github.com/joho/godotenv"
@@ -34,15 +35,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	defer pool.Close()
 	repo := repository.NewAuthRepo(pool)
 
 	service := services.NewAuthService(repo)
 
 	handler := handlers.NewAuthHandler(service)
 
-	defer pool.Close()
-	fmt.Println("Connection successful")
+	server := server.StartServer(handler)
+	fmt.Println("Server running on :8080")
+
+	server_error := server.ListenAndServe()
+
+	if server_error != nil {
+		log.Fatal(server_error)
+	}
 
 	// var version string
 	// err = pool.QueryRow(context.Background(), "select version()").Scan(&version)
