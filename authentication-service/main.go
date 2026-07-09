@@ -6,6 +6,9 @@ import (
 	"os"
 
 	dbmanager "authentication-service/DBmanager"
+	"authentication-service/handlers"
+	"authentication-service/repository"
+	"authentication-service/services"
 
 	"github.com/joho/godotenv"
 )
@@ -31,6 +34,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	repo := repository.NewAuthRepo(pool)
+
+	service := services.NewAuthService(repo)
+
+	handler := handlers.NewAuthHandler(service)
 
 	defer pool.Close()
 	fmt.Println("Connection successful")
