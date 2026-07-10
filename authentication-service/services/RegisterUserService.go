@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"net/mail"
 	"time"
 	"unicode"
 
@@ -14,6 +15,11 @@ func HashPassword(password string) (string, error) {
 		return "", err
 	}
 	return string(bytes), nil
+}
+
+func isEmailValid(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 func validatePassword(password string) (bool, error) {
@@ -61,6 +67,12 @@ func (s *AuthService) RegisterUser(firstName string, lastName string, email stri
 
 	if len(errResp) > 0 {
 		return false, errors.New(errResp)
+	}
+
+	isEmailValidated := isEmailValid(email)
+
+	if !isEmailValidated {
+		return false, errors.New("Please enter a Valid Email ID")
 	}
 
 	isPasswordValidated, err := validatePassword(password)
