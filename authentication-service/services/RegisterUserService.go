@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"time"
+	"unicode"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -15,6 +16,36 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), nil
 }
 
+func validatePassword(password string) (bool, error) {
+	if len(password) < 10 {
+		return false, errors.New("Password must be at least 10 characters long!")
+	}
+
+	var (
+		hasUpper   bool
+		hasDigit   bool
+		hasSpecial bool
+	)
+
+	for _, r := range password {
+		switch {
+		case unicode.IsUpper(r):
+			hasUpper = true
+		case unicode.IsDigit(r):
+			hasDigit = true
+		case unicode.IsPunct(r) || unicode.IsSymbol(r):
+			hasSpecial = true
+		}
+	}
+
+	if !hasUpper || !hasDigit || !hasSpecial {
+		return false, errors.New("Password must contain at least one uppercase letter, one digit, and one special character!")
+	}
+
+	return true, nil
+
+}
+
 func (s *AuthService) RegisterUser(firstName string, lastName string, email string, password string, username string, dob time.Time) (bool, error) {
 	var errResp string = ""
 	switch {
@@ -24,14 +55,18 @@ func (s *AuthService) RegisterUser(firstName string, lastName string, email stri
 		errResp = "Last name cannot be empty!"
 	case len(email) <= 0:
 		errResp = "Email cannot be empty!"
-	case len(password) <= 10:
-		errResp = "Password must be atleast 10 characters long!"
 	case len(username) <= 0:
 		errResp = "Username cannot be empty"
 	}
 
 	if len(errResp) > 0 {
 		return false, errors.New(errResp)
+	}
+
+	isPasswordValidated, err := validatePassword(password)
+
+	if !isPasswordValidated {
+		return false, err
 	}
 
 	hashed_password, err := HashPassword(password)
