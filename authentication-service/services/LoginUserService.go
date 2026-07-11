@@ -11,11 +11,7 @@ func (s *AuthService) LoginUser(emailOrUsername string, password string) (bool, 
 	var passwordHash string
 	var err error
 
-	if isEmailValid(emailOrUsername) {
-		_, passwordHash, err = s.Repo.LoginUserByEmail(emailOrUsername)
-	} else {
-		_, passwordHash, err = s.Repo.LoginUserByUsername(emailOrUsername)
-	}
+	_, passwordHash, err = s.Repo.LoginUser(emailOrUsername)
 
 	if err != nil {
 		return false, "", err
