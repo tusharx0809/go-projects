@@ -23,5 +23,17 @@ func (s *AuthService) LoginUser(emailOrUsername string, password string) (bool, 
 		return false, "", errors.New("Incorrect credentials!")
 	}
 
-	return true, passwordHash, nil
+	userID, userUID, err := s.Repo.FetchClaims(emailOrUsername)
+
+	if err != nil {
+		return false, "", err
+	}
+
+	tokenString, err := GenerateJWTToken(userID, userUID)
+
+	if err != nil {
+		return false, "", err
+	}
+
+	return true, tokenString, nil
 }
