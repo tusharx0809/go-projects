@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	dbmanager "authentication-service/DBmanager"
+	database "authentication-service/database"
 	"authentication-service/handlers"
 	"authentication-service/repository"
 	"authentication-service/server"
@@ -31,7 +31,7 @@ func main() {
 	)
 	//fmt.Println(connection_string)
 
-	pool, err := dbmanager.ConnectDB(connectionString)
+	pool, err := database.ConnectDB(connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
