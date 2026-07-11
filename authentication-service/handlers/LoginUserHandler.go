@@ -22,4 +22,29 @@ func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
+
+	var passwordHash string
+	_, passwordHash, err = h.Service.LoginUser(req.EmailOrUsername, req.Password)
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(
+			models.UserLoginResponse{
+				Success: false,
+				Message: err.Error(),
+				Token:   "",
+			},
+		)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(
+		models.UserLoginResponse{
+			Success: true,
+			Message: "Login Successful!",
+			Token:   passwordHash,
+		},
+	)
+
 }

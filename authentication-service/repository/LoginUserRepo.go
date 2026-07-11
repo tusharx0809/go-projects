@@ -1,14 +1,17 @@
 package repository
 
-import "context"
+import (
+	"context"
+	"errors"
+)
 
-func (r *AuthRepo) LoginUserByEmail(email string) (bool, string) {
+func (r *AuthRepo) LoginUserByEmail(email string) (bool, string, error) {
 
 	var emailInt int
 	emailInt = r.CheckEmail(email)
 
 	if emailInt == -1 {
-		return false, "Incorrect credentials!"
+		return false, "", errors.New("Incorrect credentials!")
 	}
 
 	var passwordHash string
@@ -16,18 +19,18 @@ func (r *AuthRepo) LoginUserByEmail(email string) (bool, string) {
 	err := r.Authdb.QueryRow(context.Background(), query, email).Scan(&passwordHash)
 
 	if err != nil {
-		return false, ""
+		return false, "", errors.New("Incorrect credentials!")
 	}
 
-	return true, passwordHash
+	return true, passwordHash, nil
 }
 
-func (r *AuthRepo) LoginUserByUsername(username string) (bool, string) {
+func (r *AuthRepo) LoginUserByUsername(username string) (bool, string, error) {
 	var usernameInt int
 	usernameInt = r.CheckUsername(username)
 
 	if usernameInt == -1 {
-		return false, "Incorrect credentials!"
+		return false, "", errors.New("Incorrect credentials!")
 	}
 
 	var passwordHash string
@@ -36,8 +39,8 @@ func (r *AuthRepo) LoginUserByUsername(username string) (bool, string) {
 	err := r.Authdb.QueryRow(context.Background(), query, username).Scan(&passwordHash)
 
 	if err != nil {
-		return false, ""
+		return false, "", errors.New("Incorrect credentials!")
 	}
 
-	return true, passwordHash
+	return true, passwordHash, nil
 }
