@@ -17,6 +17,8 @@ func GenerateJWTToken(userID int, userUID string) (string, error) {
 		UserUID: userUID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
+			Issuer:    "auth-service",
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
 
