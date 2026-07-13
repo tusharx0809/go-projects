@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (r *AuthRepo) LoginUser(usernameOrEmail string) (bool, string, error) {
+func (r *AuthRepo) LoginUserRepo(usernameOrEmail string) (bool, string, error) {
 	var passwordHash string
 
 	query := "SELECT hashed_password FROM users where user_name = $1 OR email = $1"

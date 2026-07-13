@@ -7,10 +7,10 @@ import (
 )
 
 func RegisterRoutes(mux *http.ServeMux, handler *handlers.AuthHandler) {
-	mux.HandleFunc("POST /registerUser", handler.RegisterUser)
-	mux.HandleFunc("POST /login", handler.LoginUser)
+	mux.HandleFunc("POST /registerUser", handler.RegisterUserHandler)
+	mux.HandleFunc("POST /login", handler.LoginUserHandler)
 
 	mux.Handle("GET /profile",
-		middleware.JWTMiddleware(http.HandlerFunc(handler.FetchProfile)),
+		middleware.JWTMiddleware(http.HandlerFunc(handler.FetchProfileHandler)),
 	)
 }

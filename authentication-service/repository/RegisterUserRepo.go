@@ -28,7 +28,7 @@ func (r *AuthRepo) CheckUsername(username string) int {
 	return usernameInt
 }
 
-func (r *AuthRepo) RegisterUser(firstName string, lastName string, email string, hashed_password string, username string, dob time.Time) (bool, error) {
+func (r *AuthRepo) RegisterUserRepo(firstName string, lastName string, email string, hashed_password string, username string, dob time.Time) (bool, error) {
 	query := "SELECT func_register_user($1,$2,$3,$4,$5,$6)"
 
 	isEmailUnique := r.CheckEmail(email)

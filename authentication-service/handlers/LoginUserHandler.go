@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHandler) LoginUserHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.UserLoginRequest
 
 	err := json.NewDecoder(r.Body).Decode(&req)
@@ -24,7 +24,7 @@ func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var passwordHash string
-	_, passwordHash, err = h.Service.LoginUser(req.EmailOrUsername, req.Password)
+	_, passwordHash, err = h.Service.LoginUserService(req.EmailOrUsername, req.Password)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)

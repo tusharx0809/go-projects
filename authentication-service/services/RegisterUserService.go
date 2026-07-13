@@ -52,7 +52,7 @@ func validatePassword(password string) (bool, error) {
 
 }
 
-func (s *AuthService) RegisterUser(firstName string, lastName string, email string, password string, username string, dob time.Time) (bool, error) {
+func (s *AuthService) RegisterUserService(firstName string, lastName string, email string, password string, username string, dob time.Time) (bool, error) {
 	var errResp string = ""
 	switch {
 	case len(firstName) <= 0:
@@ -86,7 +86,7 @@ func (s *AuthService) RegisterUser(firstName string, lastName string, email stri
 	if err != nil {
 		return false, err
 	}
-	_, err = s.Repo.RegisterUser(firstName, lastName, email, hashed_password, username, dob)
+	_, err = s.Repo.RegisterUserRepo(firstName, lastName, email, hashed_password, username, dob)
 
 	if err != nil {
 		return false, err
