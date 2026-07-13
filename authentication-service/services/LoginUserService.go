@@ -6,12 +6,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *AuthService) LoginUser(emailOrUsername string, password string) (bool, string, error) {
+func (s *AuthService) LoginUserService(emailOrUsername string, password string) (bool, string, error) {
 
 	var passwordHash string
 	var err error
 
-	_, passwordHash, err = s.Repo.LoginUser(emailOrUsername)
+	_, passwordHash, err = s.Repo.LoginUserRepo(emailOrUsername)
 
 	if err != nil {
 		return false, "", err

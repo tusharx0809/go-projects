@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (h *AuthHandler) RegisterUser(
+func (h *AuthHandler) RegisterUserHandler(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
@@ -36,7 +36,7 @@ func (h *AuthHandler) RegisterUser(
 		)
 		return
 	}
-	_, err = h.Service.RegisterUser(req.FirstName, req.LastName, req.Email, req.Password, req.Username, parsedDob)
+	_, err = h.Service.RegisterUserService(req.FirstName, req.LastName, req.Email, req.Password, req.Username, parsedDob)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
