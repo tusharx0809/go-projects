@@ -38,7 +38,7 @@ func JWTMiddleware(next http.Handler) http.Handler {
 		)
 
 		if err != nil || !token.Valid {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			http.Error(w, "Your session has expired, please login again!", http.StatusUnauthorized)
 			return
 		}
 
