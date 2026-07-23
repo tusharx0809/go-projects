@@ -13,7 +13,8 @@ CREATE OR REPLACE FUNCTION public.func_change_password(
 AS $BODY$
 BEGIN
 	UPDATE users
-	SET hashed_password = new_password_hash
+	SET hashed_password = new_password_hash,
+	modified_at = NOW()
 	WHERE user_id = in_user_id AND user_uid = in_user_uid::uuid;
 END;
 $BODY$;
