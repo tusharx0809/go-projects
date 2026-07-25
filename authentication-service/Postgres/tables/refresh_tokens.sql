@@ -1,0 +1,9 @@
+CREATE TABLE refresh_tokens IF NOT EXISTS (
+    refresh_token_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_ID INT REFERENCES users(user_id),
+    refresh_token TEXT NOT NULL,
+    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    modified_at TIMESTAMP WITH TIME ZONE
+)
