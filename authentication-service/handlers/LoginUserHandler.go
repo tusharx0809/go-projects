@@ -15,24 +15,28 @@ func (h *AuthHandler) LoginUserHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(
 			models.UserLoginResponse{
-				Success: false,
-				Message: err.Error(),
-				Token:   "",
+				Success:      false,
+				Message:      err.Error(),
+				AccessToken:  "",
+				RefreshToken: "",
 			},
 		)
 		return
 	}
 
-	var passwordHash string
-	_, passwordHash, err = h.Service.LoginUserService(req.EmailOrUsername, req.Password)
+	var accessToken string
+	var refreshToken string
+
+	_, accessToken, refreshToken, err = h.Service.LoginUserService(req.EmailOrUsername, req.Password)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(
 			models.UserLoginResponse{
-				Success: false,
-				Message: err.Error(),
-				Token:   "",
+				Success:      false,
+				Message:      err.Error(),
+				AccessToken:  "",
+				RefreshToken: "",
 			},
 		)
 		return
@@ -41,9 +45,10 @@ func (h *AuthHandler) LoginUserHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(
 		models.UserLoginResponse{
-			Success: true,
-			Message: "Login Successful!",
-			Token:   passwordHash,
+			Success:      true,
+			Message:      "Login Successful!",
+			AccessToken:  accessToken,
+			RefreshToken: refreshToken,
 		},
 	)
 
