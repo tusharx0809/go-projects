@@ -8,15 +8,13 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateJWTToken(userID int, userUID string) (string, error) {
+func GenerateJWTRefreshToken(userID int) (string, error) {
+	var REFRESH_JWT_KEY string = os.Getenv("REFRESH_JWT_KEY")
 
-	var JWT_KEY string = os.Getenv("SECRET_KEY")
-
-	claims := models.JWTClaims{
-		UserID:  userID,
-		UserUID: userUID,
+	claims := models.JWTRefreshTokenClaims{
+		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
 			Issuer:    "auth-service",
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
@@ -24,7 +22,7 @@ func GenerateJWTToken(userID int, userUID string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString([]byte(JWT_KEY))
+	tokenString, err := token.SignedString([]byte(REFRESH_JWT_KEY))
 
 	if err != nil {
 		return "", err

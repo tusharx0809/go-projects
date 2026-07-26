@@ -31,3 +31,13 @@ func (r *AuthRepo) FetchClaims(usernameOrEmail string) (int, string, error) {
 
 	return userID, userUID, nil
 }
+
+func (r *AuthRepo) AddRefreshTokenInDB(userID int, refreshToken string) error {
+	query := "SELECT func_add_refresh_token($1,$2)"
+	_, err := r.Authdb.Exec(context.Background(), query, userID, refreshToken)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}

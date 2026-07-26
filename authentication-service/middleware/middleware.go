@@ -27,13 +27,13 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		claims := &models.JWTClaims{}
+		claims := &models.JWTAccessTokenClaims{}
 		tokenString := parts[1]
 		token, err := jwt.ParseWithClaims(
 			tokenString,
 			claims,
 			func(token *jwt.Token) (interface{}, error) {
-				return []byte(os.Getenv("SECRET_KEY")), nil
+				return []byte(os.Getenv("ACCESS_SECRET_KEY")), nil
 			},
 		)
 

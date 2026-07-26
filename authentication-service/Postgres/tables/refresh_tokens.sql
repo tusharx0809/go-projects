@@ -1,4 +1,4 @@
-CREATE TABLE refresh_tokens IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS refresh_tokens(
     refresh_token_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_ID INT REFERENCES users(user_id),
     refresh_token TEXT NOT NULL,
