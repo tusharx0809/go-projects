@@ -9,7 +9,7 @@ import (
 )
 
 func GenerateJWTRefreshToken(userID int) (string, error) {
-	var REFRESH_JWT_KEY string = os.Getenv("REFRESH_JWT_KEY")
+	var REFRESH_JWT_KEY string = os.Getenv("REFRESH_SECRET_KEY")
 
 	claims := models.JWTRefreshTokenClaims{
 		UserID: userID,
