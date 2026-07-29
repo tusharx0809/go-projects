@@ -10,6 +10,7 @@ func RegisterRoutes(mux *http.ServeMux, handler *handlers.AuthHandler) {
 	mux.HandleFunc("POST /registerUser", handler.RegisterUserHandler)
 	mux.HandleFunc("POST /login", handler.LoginUserHandler)
 	mux.HandleFunc("POST /refresh", handler.GenerateNewAccessToken)
+	mux.HandleFunc("POST /logout", handler.LogoutUserHandler)
 
 	mux.Handle("GET /profile",
 		middleware.JWTMiddleware(http.HandlerFunc(handler.FetchProfileHandler)),
