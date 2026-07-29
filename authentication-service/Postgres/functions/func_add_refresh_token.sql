@@ -18,8 +18,7 @@ BEGIN
 		UPDATE refresh_tokens
 		SET refresh_token = in_token,
 			expires_at = NOW() + INTERVAL '7 days',
-			revoked = false,
-			created_at = NOW()
+			revoked = false
 		WHERE refresh_token_id = prev_refresh_token_id;
 	ELSE
 		INSERT INTO refresh_tokens(user_id, refresh_token, expires_at, revoked, created_at)
