@@ -48,7 +48,7 @@ func (h *AuthHandler) GenerateNewAccessToken(w http.ResponseWriter, r *http.Requ
 	}
 
 	userID := claims.UserID
-	newAccesstoken, err := h.Service.GenerateNewAccessToken(userID)
+	newAccesstoken, err := h.Service.GenerateNewAccessToken(userID, req.RefreshToken)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
