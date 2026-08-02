@@ -16,6 +16,8 @@ func (h *AuthHandler) FetchProfileHandler(w http.ResponseWriter, r *http.Request
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(
 			models.ProfileResponse{
+				Success:      false,
+				Message:      err.Error(),
 				UserEmail:    "",
 				UserFullName: "",
 				Dob:          "",
@@ -27,6 +29,8 @@ func (h *AuthHandler) FetchProfileHandler(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(
 		models.ProfileResponse{
+			Success:      true,
+			Message:      "Profile fetched successfully",
 			UserEmail:    userEmail,
 			UserFullName: userFullName,
 			Dob:          userDob,

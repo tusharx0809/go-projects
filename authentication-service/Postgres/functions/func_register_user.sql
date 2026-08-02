@@ -17,7 +17,7 @@ AS $BODY$
 	DECLARE
 			new_user_id INT;
 	BEGIN
-		INSERT INTO users(email,username,hashed_password)
+		INSERT INTO users(email,user_name,hashed_password)
 		VALUES(in_email,in_username,in_hashed_password)
 		RETURNING user_id INTO new_user_id;
 
